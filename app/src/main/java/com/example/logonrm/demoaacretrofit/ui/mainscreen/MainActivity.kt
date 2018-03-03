@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.example.logonrm.demoaacretrofit.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -23,9 +24,21 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.apiResponse.observe(this, Observer {
             apiResponse ->
             if(apiResponse?.erro == null){
-                tvResultado.text = "Logradouro: ${apiResponse?.endereco?.logradouro}\n Bairro: ${apiResponse?.endereco?.bairro}\n Localidade: ${apiResponse?.endereco?.localidade}\n UF: ${apiResponse?.endereco?.uf}"
+                tvResultado.text = "Logradouro: ${apiResponse?.endereco?.logradouro}\n" +
+                        "Bairro: ${apiResponse?.endereco?.bairro}\n" +
+                        "Localidade: ${apiResponse?.endereco?.localidade}\n " +
+                        "UF: ${apiResponse?.endereco?.uf}"
             }else {
                 Log.i("TAG", "ERRO: ${apiResponse.erro}")
+            }
+        })
+
+        mainViewModel.isLoading.observe(this, Observer {
+            isLoading ->
+            if (isLoading!!){
+                loading.visibility = View.VISIBLE
+            }else {
+                loading.visibility = View.GONE
             }
         })
     }
